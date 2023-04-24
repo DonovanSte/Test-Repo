@@ -24,7 +24,10 @@ int main(int ac, char **argv)
             printf("Exiting shell.....\n");
             return (-1);
         }
-
+        if (strcmp(lineptr, "exit\n") == 0)
+        {
+            return (0);
+        }
         lineptr_cpy = malloc(sizeof(char) * nread);
         if (lineptr_cpy == NULL)
         {
