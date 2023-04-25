@@ -1,5 +1,7 @@
 #include "main.h"
 
+extern char **environ;
+
 int main(int ac, char **argv)
 {
     char *promt = "(myShell) $ ";
@@ -34,8 +36,18 @@ int main(int ac, char **argv)
         }
         if (strcmp(lineptr, "exit\n") == 0)
         {
-            return (0);
+            exit(EXIT_SUCCESS);
         }
+        else if (strcmp(lineptr, "env\n") == 0)
+        {
+            char **env = environ;
+            while (*env)
+            {
+                printf("%s\n", *env++);
+            }
+            continue;
+        }
+
         lineptr_cpy = malloc(sizeof(char) * nread);
         if (lineptr_cpy == NULL)
         {
@@ -70,8 +82,8 @@ int main(int ac, char **argv)
         execmd(argv);
     }
 
-        free(lineptr_cpy);
-        free(lineptr);
+    free(lineptr_cpy);
+    free(lineptr);
 
     return (0);
 }

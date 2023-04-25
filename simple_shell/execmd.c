@@ -14,10 +14,10 @@ void execmd(char **argv)
         if (actual_command == NULL)
         {
             printf("Command not found: %s\n", command);
+            return;
         }
 
         pid = fork();
-    
         if (pid < 0)
         {
             perror("Error");
