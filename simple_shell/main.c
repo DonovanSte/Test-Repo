@@ -7,7 +7,7 @@ int main(int ac, char **argv)
     char *lineptr_cpy = NULL;
     const char *delim = " \n";
     size_t n = 0;
-    __ssize_t nread;
+    ssize_t nread;
     int token_num = 0;
     char *token;
     int i;
@@ -21,8 +21,16 @@ int main(int ac, char **argv)
 
         if (nread == -1)
         {
-            printf("Exiting shell.....\n");
             return (-1);
+        }
+        else if (nread == 1)
+        {
+            continue;
+        }
+        else if (nread > 4096)
+        {
+            printf("Error: Input line too long.\n");
+            continue;
         }
         if (strcmp(lineptr, "exit\n") == 0)
         {
@@ -31,7 +39,7 @@ int main(int ac, char **argv)
         lineptr_cpy = malloc(sizeof(char) * nread);
         if (lineptr_cpy == NULL)
         {
-            perror("tsh: memory allocation error");
+            perror("memory allocation error");
             return (-1);
         }    
 

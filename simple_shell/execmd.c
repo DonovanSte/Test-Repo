@@ -11,6 +11,11 @@ void execmd(char **argv)
         command = argv[0];
         actual_command = get_location(command);
 
+        if (actual_command == NULL)
+        {
+            printf("Command not found: %s\n", command);
+        }
+
         pid = fork();
     
         if (pid < 0)
