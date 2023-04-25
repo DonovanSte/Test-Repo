@@ -1,89 +1,64 @@
 #include "main.h"
 
-extern char **environ;
 
-int main(int ac, char **argv)
+int main(int ac, char **argv) 
 {
-    char *promt = "(myShell) $ ";
+    char *prompt = "(myShell) $ ";
     char *lineptr = NULL;
-    char *lineptr_cpy = NULL;
-    const char *delim = " \n";
     size_t n = 0;
-    ssize_t nread;
-    int token_num = 0;
-    char *token;
-    int i;
+    int token_num, i;
+    int ret;
 
     (void)ac;
 
-    while (1)
+    while (1) 
     {
-        printf("%s", promt);
-        nread = getline(&lineptr, &n, stdin);
+        print_prompt(prompt);
+        lineptr = read_line(&n);
 
-        if (nread == -1)
+        if (lineptr == NULL) 
         {
             return (-1);
         }
-        else if (nread == 1)
+        else if (strcmp(lineptr, "\n") == 0) 
         {
+            free(lineptr);
             continue;
-        }
-        else if (nread > 4096)
+        } 
+        else if (strlen(lineptr) > 4096) 
         {
             printf("Error: Input line too long.\n");
+            free(lineptr);
             continue;
         }
-        if (strcmp(lineptr, "exit\n") == 0)
+
+        ret = tokenize_line(lineptr, &argv);
+        if (ret == -1) 
         {
-            exit(EXIT_SUCCESS);
+            free(lineptr);
+            continue;
         }
-        else if (strcmp(lineptr, "env\n") == 0)
-        {
-            char **env = environ;
-            while (*env)
+
+        token_num = ret;
+
+        ret = execute_command(argv);
+        if (ret == -1) {
+            free(lineptr);
+            for (i = 0; i < token_num; i++) 
             {
-                printf("%s\n", *env++);
+                free(argv[i]);
             }
+            free(argv);
             continue;
         }
 
-        lineptr_cpy = malloc(sizeof(char) * nread);
-        if (lineptr_cpy == NULL)
+        free(lineptr);
+        for (i = 0; i < token_num; i++)
         {
-            perror("memory allocation error");
-            return (-1);
-        }    
-
-        strcpy(lineptr_cpy, lineptr);
-
-        token = strtok(lineptr, delim);
-
-        while (token != NULL)
-        {
-            token_num++;
-            token = strtok(NULL, delim);
+            free(argv[i]);
         }
-        token_num++;
-
-        argv = malloc(sizeof(char *) * token_num);
-
-        token = strtok(lineptr_cpy, delim);
-
-        for (i = 0; token != NULL; i++)
-        {
-            argv[i] = malloc(sizeof(char) * strlen(token));
-            strcpy(argv[i], token);
-
-            token = strtok(NULL, delim);
-        }
-        argv[i] = NULL;
-
-        execmd(argv);
+        free(argv);
     }
-
-    free(lineptr_cpy);
-    free(lineptr);
 
     return (0);
 }

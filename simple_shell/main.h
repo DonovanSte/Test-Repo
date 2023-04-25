@@ -13,5 +13,9 @@
 /*FUNCTION PROTOTYPES*/
 void execmd(char **argv);
 char *get_location(char *command);
+void print_prompt(char *prompt);
+int execute_command(char **argv);
+int tokenize_line(char *lineptr, char ***argv);
+char* read_line(size_t *n);
 
 #endif
