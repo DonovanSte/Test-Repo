@@ -19,5 +19,7 @@ void print_prompt(char *prompt);
 int execute_command(char **argv);
 int tokenize_line(char *lineptr, char ***argv);
 char *read_line(size_t *n);
+void process_input(char *prompt);
+void process_command(char *lineptr);
 
 #endif
