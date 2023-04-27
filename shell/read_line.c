@@ -1,5 +1,9 @@
 #include "main.h"
-
+/**
+ * read_line - Read a line of input from the user
+ *
+ * Return: A pointer to a string containing the line read from input
+ */
 char *read_line()
 {
 	char *line = NULL;
@@ -10,7 +14,7 @@ char *read_line()
 	while ((c = getchar()) != '\n' && c != EOF)
 	{
 		if (len + 1 >= bufsize)
-		{ // if the buffer is full, resize it
+		{ /* if the buffer is full, resize it */
 			bufsize += 256;
 			line = realloc(line, bufsize);
 		}
@@ -18,11 +22,11 @@ char *read_line()
 	}
 
 	if (len == 0 && c == EOF)
-	{ // if there was no input, return NULL
-		return NULL;
+	{ /* if there was no input, return NULL */
+		return (NULL);
 	}
 
-	// append a null terminator to the end of the string
+	/* append a null terminator to the end of the string */
 	if (len + 1 >= bufsize)
 	{
 		bufsize += 1;
@@ -30,5 +34,5 @@ char *read_line()
 	}
 	line[len] = '\0';
 
-	return line;
+	return (line);
 }

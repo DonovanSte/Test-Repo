@@ -1,5 +1,11 @@
 #include "main.h"
-
+/**
+ * main - Entry point to the program
+ * @argc: Number of arguments passed to the program
+ * @argv: Array of arguments passed to the program
+ *
+ * Return: 0 on success
+ */
 int main(int argc, char **argv)
 {
 	int i;
@@ -14,55 +20,31 @@ int main(int argc, char **argv)
 
 		printf("$ ");
 		fflush(stdout);
+		line = read_line(); /* read a line of input */
 
-		/* read a line of input */
-		line = read_line();
-
-		if (!line)
-		{
-			/* end of file or error */
+		if (!line) /* end of file or error */
 			break;
-		}
-
-		/* split the line into arguments */
-		for (char *p = line; *p; )
+		for (char *p = line; *p; ) /* split the line into arguments */
 		{
 			while (*p == ' ' || *p == '\t')
-			{
-				*p++ = '\0';
-			}
+			{*p++ = '\0'; }
 			if (*p)
-			{
-				args[nargs++] = p;
-			}
+			{args[nargs++] = p; }
 			while (*p && *p != ' ' && *p != '\t')
-			{
-				p++;
-			}
+			{p++; }
 		}
 		args[nargs] = NULL;
-
-		/* create a child process to execute the command */
-		pid = fork();
-
+		pid = fork(); /* create a child process to execute the command */
 		if (pid == -1)
-		{
-			perror("fork");
-			exit(1);
-		}
-		else if (pid == 0)
-		{
-			/* child process */
-			execvp(args[0], args);
+		{perror("fork");
+			exit(1); }
+		else if (pid == 0) /* child process */
+		{execvp(args[0], args);
 			perror("execvp");
-			exit(1);
-		}
-		else
-		{
-			/* parent process */
+			exit(1); }
+		else /* parent process */
 			waitpid(pid, &status, 0);
-		}
 		free(line);
 	}
-	return 0;
+	return (0);
 }
