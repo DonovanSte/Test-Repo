@@ -7,7 +7,6 @@
 char *_getline(void)
 {
 	char *line = NULL;
-	size_t bufsize = 0;
 	size_t pos = 0;
 	int c;
 
@@ -18,7 +17,9 @@ char *_getline(void)
 		if (c == EOF || c == '\n')
 		{
 			if (pos == 0 && c == EOF)
+			{
 				return (NULL);
+			}
 			else
 			{
 				line = realloc(line, pos + 1);
@@ -32,6 +33,5 @@ char *_getline(void)
 			line[pos] = c;
 			pos++;
 		}
-		bufsize = pos;
 	}
 }

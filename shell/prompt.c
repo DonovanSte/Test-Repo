@@ -9,6 +9,7 @@
  */
 int prompt(int ac, char **av)
 {
+	(void)ac, (void)av;
 	while (1)
 	{
 		char buffer[1024];

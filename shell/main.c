@@ -8,15 +8,16 @@
  */
 int main(int argc, char **argv)
 {
-	int i;
 	pid_t pid;
 	int status;
+	(void)argc, (void)argv;
 
 	while (1)
 	{
 		char *line;
 		char *args[256];
 		int nargs = 0;
+		char *p;
 
 		printf("$ ");
 		fflush(stdout);
@@ -24,7 +25,7 @@ int main(int argc, char **argv)
 
 		if (!line) /* end of file or error */
 			break;
-		for (char *p = line; *p; ) /* split the line into arguments */
+		for (p = line; *p; ) /* split the line into arguments */
 		{
 			while (*p == ' ' || *p == '\t')
 			{*p++ = '\0'; }

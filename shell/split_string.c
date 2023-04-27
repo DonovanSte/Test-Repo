@@ -9,6 +9,7 @@
  */
 char **split_string(char *string, int *count)
 {
+	char **words;
 	int i, j, len = 0;
 	*count = 1;
 
@@ -20,7 +21,7 @@ char **split_string(char *string, int *count)
 	}
 
 	/* allocate memory for the array of words */
-	char **words = malloc(*count * sizeof(char *));
+	words = malloc(*count * sizeof(char *));
 
 	/* split the string into words */
 	j = 0;
